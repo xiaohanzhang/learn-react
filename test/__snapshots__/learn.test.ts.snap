@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`leart-react renders single div 1`] = `
+<div>
+  <div>
+    hello world
+  </div>
+</div>
+`;

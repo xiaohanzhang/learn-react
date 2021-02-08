@@ -1,4 +1,5 @@
 import Container, { FC, MyChildren, MyElement, replaceChildren } from './Container';
+export { useState, useRef } from './hooks';
 
 export const createElement = <P extends {}>(
   type: FC | string, 
@@ -30,4 +31,5 @@ export const render = (current: MyElement, element: Element | null) => {
   } else {
     replaceChildren(element, container.render(current));
   }
+  return element;
 }

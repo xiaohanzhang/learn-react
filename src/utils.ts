@@ -1,5 +1,5 @@
 export function debounce<T extends (...args: any) => any>(func: T, wait: number = 0) {
-  let timeout: NodeJS.Timeout;
+  let timeout: any;
   let result: any;
 
   return function debounced(this: any, ...args: any[]) {

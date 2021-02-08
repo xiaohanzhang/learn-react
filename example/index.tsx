@@ -1,6 +1,6 @@
-import { createElement as ce, render } from '../.';
+import { createElement as ce, render, useState, useRef } from '../.';
 
-const Hello = () => {
+const Hello = ({ counterRef }) => {
   return ce(
     'div', 
     {
@@ -8,7 +8,7 @@ const Hello = () => {
         console.log('Hello');
       },
     }, 
-    `hello world`,
+    `hello world ${counterRef.current}`,
     ce(Foo)
   );
 }
@@ -19,10 +19,19 @@ const Foo = () => {
 }
 
 const App = () => {
+  const [counter, setCounter] = useState(0);
+  const ref = useRef(0);
+  
   console.log('render: App');
   return ce(
-    'div', {}, 
-    ce(Hello),
+    'div', null, 
+    ce('div', {
+      onClick: () => {
+        setCounter(counter + 1);
+        ref.current = counter + 1;
+      }
+    }, `App clicked: ${counter}`),
+    ce(Hello, {counterRef: ref}),
     ce(Foo),
   );
 }

@@ -35,7 +35,6 @@ const createHtmlElement = (tag: string, props: Props & HTMLProps) => {
 }
 
 export const replaceChildren = (parent: Node, children: Node[]) => {
-  console.log(parent, children);
   if (children.length > 0) {
     children.forEach((child) => {
       parent.appendChild(child);
@@ -158,7 +157,6 @@ class Container {
   }
 
   render(current?: MyElement | null) {
-    console.log(current);
     if (!current) {
       current = this.prev;
     } else if (!this.shouldRender(current)) {
@@ -171,7 +169,6 @@ class Container {
       } else {
         this.element = updateHtmlElement(this.element, props);
       }
-      console.log(children);
       return [replaceChildren(this.element, this.renderChildren(children))];
     } else {
       Container.instance = this;
@@ -179,6 +176,36 @@ class Container {
       const newChildren = [type({...props, children})];
       return this.renderChildren(newChildren);
     }
+  }
+
+  nextHookState<T>(initialState: T): [T, boolean] {
+    const isNew = this.hookStateIndex === this.hookStates.length;
+    if (isNew) {
+      this.hookStates.push(initialState);
+    }
+    const state = this.hookStates[this.hookStateIndex];
+    this.hookStateIndex += 1;
+    return [state, isNew];
+  }
+
+  useRef<T>(initial: T): {current: T} {
+    return this.nextHookState({current: initial})[0];
+  }
+
+  useState<T>(initial: T): [T, (value: T) => T] {
+    const [state] = this.nextHookState<{
+      value: T, setValue: null | ((value: T) => T)
+    }>({ value: initial, setValue: null });
+
+    if (state.setValue === null) {
+      state.setValue = (value: T) => {
+        state.value = value;
+        this.debounceRender();
+        return value;
+      };
+    }
+
+    return [state.value, state.setValue];
   }
 }
 
