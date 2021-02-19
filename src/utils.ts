@@ -35,6 +35,6 @@ export const isEqual = (src: any, target: any) => {
   const targetTag = Object.prototype.toString.call(target);
   return srcTag === targetTag && (
     (Array.isArray(src) && isEqualArrays(src, target)) ||
-    (srcTag === '[object Array]' && isEqualObjects(src, target))
+    (srcTag === '[object Object]' && isEqualObjects(src, target))
   )
 }
