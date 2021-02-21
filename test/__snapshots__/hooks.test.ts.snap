@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`hooks components render correct times 1`] = `
+Array [
+  <div>
+    <div />
+    <div>
+      0
+    </div>
+  </div>,
+]
+`;
